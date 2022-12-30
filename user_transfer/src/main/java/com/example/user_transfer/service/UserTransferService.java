@@ -2,6 +2,8 @@ package com.example.user_transfer.service;
 
 
 import com.example.user_transfer.controller.dto.AuthenticationRequest;
+import com.example.user_transfer.controller.dto.UserDTO;
+import com.example.user_transfer.repository.MyEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,17 +14,14 @@ import reactor.core.publisher.Mono;
 
 
 @Service
-@RequiredArgsConstructor
 public class UserTransferService {
     private final WebClient webClient;
 
 
 
-
-
-@Autowired
     public UserTransferService(WebClient.Builder builder){
-       this.webClient = builder.baseUrl("http://localhost:8080").build();
+       this.webClient = builder.baseUrl("http://localhost:8080")
+               .build();
     }
 
     public String authenticate(AuthenticationRequest authenticationRequest)
@@ -51,7 +50,11 @@ public class UserTransferService {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.ALL_VALUE)
                 .headers(h -> h.setBearerAuth(token.substring(7)))
                 .retrieve()
-                .bodyToMono(String.class).block();
+                .bodyToMono(String.class)
+                .block();
+
+
+
     }
 
 
